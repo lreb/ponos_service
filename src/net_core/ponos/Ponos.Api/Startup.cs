@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Ponos.Api.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,12 @@ namespace Ponos.Api
                 config.ReportApiVersions = true;
                 config.ApiVersionReader = new QueryStringApiVersionReader("version");
             });
+            
+            #region Cors service
+            // enable policy cors service
+            services.ConfigureCors(Configuration);
+            #endregion
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -44,6 +51,8 @@ namespace Ponos.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(CorsExtension.AllowSpecificOrigins);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
