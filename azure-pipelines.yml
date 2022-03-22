@@ -16,6 +16,8 @@ variables:
   system.debug: true
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
+- script: |
+    cd src/net_core/ponos
+    dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
